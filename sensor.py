@@ -14,11 +14,12 @@ _LOGGER = logging.getLogger(__name__)
 def _dry_setup(hass, config, add_devices, discovery_info=None):
     """Setup platform"""
     _LOGGER.debug("Dumping config %r", config)
+    _LOGGER.debug("Dumping hass data", hass.data)
     barry_connection = hass.data[DOMAIN]
-    price_code = hass.data[PRICE_CODE]
-    meter_id = hass.data[MPID]
+    price_code = config[PRICE_CODE]
+    meter_id = config[MPID]
     sensor = BarrySensor(
-        barry_connection, 
+        barry_connection,
         price_code,
         meter_id
     )
@@ -87,8 +88,8 @@ class BarrySensor(Entity):
 
     def _update_current_price(self) -> None:
         _LOGGER.debug("Updating current price")
-        self._current_total_price = self._barry_home.update_total_price(self._meter_id)
-        self._current_spot_price = self._barry_home.update_spot_price(self._price_code)
+        self._current_total_price = self._barry_home.update_total_price(self._meter_id)[0]
+        self._current_spot_price = self._barry_home.update_spot_price(self._price_code)[0]
         _LOGGER.debug("Updated %s with new prices: %s/%s", self.name, self._current_total_price, self._current_spot_price)
 
     async def check_stuff(self) -> None:

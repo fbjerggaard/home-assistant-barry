@@ -1,6 +1,7 @@
 """Adds config flow for Barry integration."""
 # pylint: disable=attribute-defined-outside-init
 import asyncio
+import logging
 
 from pybarry import Barry, InvalidToken
 import voluptuous as vol
@@ -10,6 +11,7 @@ from homeassistant.const import CONF_ACCESS_TOKEN
 
 from .const import DOMAIN, PRICE_CODE, MPID
 
+_LOGGER = logging.getLogger(__name__)
 
 class BarryConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Handle a config flow for Barry integration."""
@@ -57,7 +59,8 @@ class BarryConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     async def async_step_metering_point(self, user_input=None):
         """Handle the metering point selection step."""
-        mpids = self.hass.async_add_executor_job(self.init_info.get_all_metering_points)
+        mpids = await self.hass.async_add_executor_job(self.init_info.get_all_metering_points)
+        _LOGGER.debug("Got mpids %s", mpids)
         mpids_display = [mpid[0] for mpid in mpids]
         data_schema = vol.Schema(
             {vol.Required("metering_point"): vol.In(mpids_display)}
@@ -69,6 +72,10 @@ class BarryConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 if mpid == selected_meter:
                     price_code = code
 
+            _LOGGER.debug("Selected meter: %s", selected_meter)
+            mpid = selected_meter.split(",")[-1].strip()
+            _LOGGER.debug("MPID: %s", mpid)
+
             unique_id = str(selected_meter) + "_spot_price"
             await self.async_set_unique_id(unique_id)
             self._abort_if_unique_id_configured()
@@ -78,7 +85,7 @@ class BarryConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 data={
                     CONF_ACCESS_TOKEN: self.init_info.access_token,
                     PRICE_CODE: price_code,
-                    MPID: selected_meter
+                    MPID: mpid
                 },
             )
 
