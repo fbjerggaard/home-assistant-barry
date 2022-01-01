@@ -57,7 +57,7 @@ class BarryConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     async def async_step_metering_point(self, user_input=None):
         """Handle the metering point selection step."""
-        mpids = self.init_info.get_all_metering_points()
+        mpids = self.hass.async_add_executor_job(self.init_info.get_all_metering_points)
         mpids_display = [mpid[0] for mpid in mpids]
         data_schema = vol.Schema(
             {vol.Required("metering_point"): vol.In(mpids_display)}

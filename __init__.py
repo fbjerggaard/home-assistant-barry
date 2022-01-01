@@ -6,8 +6,8 @@ from pybarry import Barry
 from homeassistant import config_entries
 from homeassistant.const import CONF_ACCESS_TOKEN
 
-from ...config_entries import ConfigEntry
-from ...core import HomeAssistant
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.core import HomeAssistant
 from .const import DOMAIN
 
 PLATFORMS = ["sensor"]
