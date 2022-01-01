@@ -8,10 +8,10 @@ from homeassistant.const import CONF_ACCESS_TOKEN
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
-from .const import DOMAIN
+from .const import DOMAIN, PRICE_CODE
 
 PLATFORMS = ["sensor"]
-
+EVENT_NEW_DATA = "barry_update"
 _LOGGER = logging.getLogger(__name__)
 
 
@@ -39,6 +39,7 @@ async def async_setup_entry(hass, entry):
         access_token=entry.data[CONF_ACCESS_TOKEN],
     )
     hass.data[DOMAIN] = barry_connection
+    hass.data[PRICE_CODE] = entry.data[PRICE_CODE]
 
     hass.config_entries.async_setup_platforms(entry, PLATFORMS)
 

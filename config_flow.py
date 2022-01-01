@@ -8,7 +8,7 @@ import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.const import CONF_ACCESS_TOKEN
 
-from .const import DOMAIN, PRICE_CODE
+from .const import DOMAIN, PRICE_CODE, MPID
 
 
 class BarryConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
@@ -68,7 +68,6 @@ class BarryConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             for mpid, code in mpids:
                 if mpid == selected_meter:
                     price_code = code
-            self.hass.data[PRICE_CODE] = price_code
 
             unique_id = str(selected_meter) + "_spot_price"
             await self.async_set_unique_id(unique_id)
@@ -79,6 +78,7 @@ class BarryConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 data={
                     CONF_ACCESS_TOKEN: self.init_info.access_token,
                     PRICE_CODE: price_code,
+                    MPID: selected_meter
                 },
             )
 

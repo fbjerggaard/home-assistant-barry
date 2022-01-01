@@ -4,3 +4,4 @@
 # name for the integration.
 DOMAIN = "barry"
 PRICE_CODE = "price_code"
+MPID = "mpid"
