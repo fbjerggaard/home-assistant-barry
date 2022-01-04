@@ -47,7 +47,7 @@ The sensor has the following fields:
 
 ## Lovelace examples
 ### Prices card
-![https://raw.githubusercontent.com/fbjerggaard/home-assistant-barry/main/doc/prices_card.png]()
+![Price card](https://github.com/fbjerggaard/home-assistant-barry/blob/main/doc/prices_card.png?raw=true)  
 To show a simple card with todays prices you could use the `multiple-entity-row` card with the following yaml configuration:
 ```yaml
 entity: sensor.barry_sensor
@@ -71,7 +71,7 @@ secondary_info:
 **Remember to change the entity to the correct entity generated for your setup**
 
 ### Price graph
-![https://raw.githubusercontent.com/fbjerggaard/home-assistant-barry/main/doc/price_graph.png]()
+![Graph](https://github.com/fbjerggaard/home-assistant-barry/blob/main/doc/price_graph.png?raw=true)  
 To show a graph with today and tomorrows prices you can utilize the `apexcharts-card` card with the following example yaml configuration:
 ```yaml
 type: custom:apexcharts-card
