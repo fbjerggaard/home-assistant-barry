@@ -4,7 +4,7 @@ from random import randint
 from datetime import datetime, timedelta
 from pytz import timezone
 
-from pybarry import Barry
+from .pybarry import Barry
 
 import voluptuous as vol
 
@@ -12,7 +12,7 @@ from homeassistant import config_entries
 from homeassistant.const import CONF_ACCESS_TOKEN
 
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.core import Config,HomeAssistant
+from homeassistant.core import Config, HomeAssistant
 from homeassistant.helpers.dispatcher import async_dispatcher_send
 from homeassistant.helpers.event import async_call_later, async_track_time_change
 
@@ -21,18 +21,20 @@ from .events import async_track_time_change_in_tz
 
 PLATFORMS = ["sensor"]
 EVENT_NEW_DATA = "barry_update"
-RANDOM_MINUTE = randint(0, 10)
+RANDOM_MINUTE = randint(5, 15)
 RANDOM_SECOND = randint(0, 59)
 
 _LOGGER = logging.getLogger(__name__)
 
 CONFIG_SCHEMA = vol.Schema({DOMAIN: vol.Schema({})}, extra=vol.ALLOW_EXTRA)
 
+
 class BarryData:
     def __init__(self, hass: HomeAssistant):
         self._hass = hass
         self.listeners = []
         self.barry_connection = None
+
 
 async def _dry_setup(hass, entry) -> bool:
     """Setup"""
@@ -80,9 +82,9 @@ async def _dry_setup(hass, entry) -> bool:
 
 
 async def async_setup(hass: HomeAssistant, config: ConfigEntry):
-#     """Set up the Barry component."""
-#     #hass.data[DOMAIN] = {}
-#     #return await _dry_setup(hass, entry.data)
+    #     """Set up the Barry component."""
+    #     #hass.data[DOMAIN] = {}
+    #     #return await _dry_setup(hass, entry.data)
     return True
 
 

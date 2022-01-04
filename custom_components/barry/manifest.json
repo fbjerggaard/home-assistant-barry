@@ -1,0 +1,9 @@
+{
+  "domain": "barry",
+  "name": "Barry",
+  "documentation": "https://github.com/fbjerggaard/home-assistant-barry",
+  "codeowners": ["@fbjerggaard"],
+  "config_flow": true,
+  "iot_class": "cloud_polling",
+  "version": "2022.1.1"
+}

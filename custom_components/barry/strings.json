@@ -23,5 +23,17 @@
         "title": "Select Metering Point"
       }
     }
+  },
+  "options": {
+    "flow_title": "Barry Configuration",
+    "step": {
+      "user": {
+        "title": "API Token",
+        "description": "Configure access token. Get it from the barry app under the API section",
+        "data": {
+          "access_token": "[%key:common::config_flow::data::access_token%]"
+        }
+      }
+    }
   }
 }
