@@ -31,8 +31,7 @@ class Barry:
     @staticmethod
     def hour_rounder(t):
         # Rounds to nearest hour by adding a timedelta hour if minute >= 30
-        return (t.replace(second=0, microsecond=0, minute=0, hour=t.hour)
-                + timedelta(hours=t.minute // 30))
+        return (t.replace(second=0, microsecond=0, minute=0, hour=t.hour))
 
     @staticmethod
     def get_currency(data):
@@ -65,11 +64,11 @@ class Barry:
     def get_current_spot_price(self, price_code):
         current_time = self.hour_rounder(
             datetime.utcnow().replace(microsecond=0)).isoformat() + 'Z'
-        last_hour_date_time = self.hour_rounder(
-            (datetime.utcnow() - timedelta(hours=1)).replace(microsecond=0)).isoformat() + 'Z'
+        next_hour_date_time = self.hour_rounder(
+            (datetime.utcnow() + timedelta(hours=1)).replace(microsecond=0)).isoformat() + 'Z'
 
         data = '{ "jsonrpc": "2.0", "id": 0, "method": "co.getbarry.api.v1.OpenApiController.getPrice", "params": [ "%s", "%s", "%s" ] }' % (
-            price_code, last_hour_date_time, current_time)
+            price_code, current_time, next_hour_date_time)
         response = requests.post(
             self.endpoint, headers=self.headers, data=data)
         json_res = response.json()
@@ -85,11 +84,11 @@ class Barry:
     def get_current_total_price(self, mpid):
         current_time = self.hour_rounder(
             datetime.utcnow().replace(microsecond=0)).isoformat() + 'Z'
-        last_hour_date_time = self.hour_rounder(
-            (datetime.utcnow() - timedelta(hours=1)).replace(microsecond=0)).isoformat() + 'Z'
+        next_hour_date_time = self.hour_rounder(
+            (datetime.utcnow() + timedelta(hours=1)).replace(microsecond=0)).isoformat() + 'Z'
 
         data = '{ "jsonrpc": "2.0", "id": 0, "method": "co.getbarry.api.v1.OpenApiController.getTotalKwHPrice", "params": [ "%s", "%s", "%s" ] }' % (
-            mpid, last_hour_date_time, current_time)
+            mpid, current_time, next_hour_date_time)
         response = requests.post(
             self.endpoint, headers=self.headers, data=data)
         json_res = response.json()

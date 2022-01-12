@@ -105,10 +105,6 @@ class BarrySensor(Entity):
         return self.current_total_price
 
     @property
-    def icon(self) -> str:
-        return "mdi:flash"
-
-    @property
     def unit(self) -> str:
         return self._price_type
 
@@ -158,6 +154,10 @@ class BarrySensor(Entity):
     @property
     def today(self) -> list:
         return self._tomorrow
+
+    @property
+    def device_class(self) -> str:
+        return "monetary"
 
     def _update_current_price(self) -> None:
         _LOGGER.debug("Updating current price")
